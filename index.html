@@ -295,6 +295,7 @@
     color: var(--ink-soft);
   }
   .export-bar .total b{ color: var(--ink); }
+  .export-actions{ display:flex; gap: 10px; }
   .download-btn{
     background: var(--orange);
     color: #fff;
@@ -312,9 +313,22 @@
     color: var(--ink-soft);
     cursor: not-allowed;
   }
+  .download-btn.secondary{
+    background: #fff;
+    color: var(--blue);
+    border: 1px solid var(--blue);
+  }
+  .download-btn.secondary:hover{ background: var(--blue-soft); }
+  .download-btn.secondary:disabled{
+    background: #fff;
+    color: var(--ink-soft);
+    border-color: var(--rule-strong);
+  }
 
   @media (max-width: 560px){
     .field-row{ grid-template-columns: 1fr; }
+    .export-bar{ flex-direction: column; align-items: stretch; }
+    .export-actions{ flex-direction: column; }
   }
 </style>
 </head>
@@ -574,13 +588,17 @@
 
   <div class="export-bar">
     <div class="total"><b id="total-count">0</b> referencia(s) lista(s) para exportar</div>
-    <button class="download-btn" id="download-btn" onclick="downloadRis()" disabled>Descargar .ris</button>
+    <div class="export-actions">
+      <button class="download-btn secondary" id="download-btn-bib" onclick="downloadBib()" disabled>Descargar .bib</button>
+      <button class="download-btn" id="download-btn" onclick="downloadRis()" disabled>Descargar .ris</button>
+    </div>
   </div>
 
 </div>
 
 <script>
 const store = { news: [], pcomm: [], corp: [], web: [], yt: [] };
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 
 function fmtDateAPA(iso){
   if(!iso) return { year:'s.f.', full:null };
@@ -702,6 +720,7 @@ function render(){
   const total = store.news.length + store.pcomm.length + store.corp.length + store.web.length + store.yt.length;
   document.getElementById('total-count').textContent = total;
   document.getElementById('download-btn').disabled = total === 0;
+  document.getElementById('download-btn-bib').disabled = total === 0;
 }
 
 function risEscape(s){
@@ -782,6 +801,122 @@ function downloadRis(){
   const a = document.createElement('a');
   a.href = url;
   a.download = 'referencias.ris';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ---------------- BibTeX export ----------------
+
+function slugKey(s){
+  return (s||'ref')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-zA-Z0-9]+/g,'')
+    .toLowerCase() || 'ref';
+}
+
+function escapeBib(s){
+  return (s||'')
+    .replace(/\\/g,'\\textbackslash ')
+    .replace(/([&%$#_{}])/g,'\\$1');
+}
+
+function bibField(name, value){
+  if(!value) return '';
+  return `  ${name} = {${escapeBib(value)}},\n`;
+}
+
+function bibEntry(type, key, fields){
+  let out = `@${type}{${key},\n`;
+  Object.entries(fields).forEach(([k,v])=>{ out += bibField(k, v); });
+  out = out.replace(/,\n$/, '\n');
+  out += '}\n\n';
+  return out;
+}
+
+function buildBib(){
+  let out = '';
+  const usedKeys = {};
+  function makeKey(base, year){
+    let key = slugKey(base) + (year || '');
+    if(usedKeys[key]){ usedKeys[key]++; key += usedKeys[key]; }
+    else{ usedKeys[key] = 1; }
+    return key;
+  }
+
+  store.news.forEach(e=>{
+    const key = makeKey(e.author || e.outlet || e.title, e.d && e.d.y);
+    out += bibEntry('misc', key, {
+      author: e.author,
+      title: e.title,
+      year: e.d && e.d.y,
+      month: e.d && e.d.m ? MESES[e.d.m-1] : '',
+      howpublished: e.outlet,
+      url: e.url
+    });
+  });
+
+  store.pcomm.forEach(e=>{
+    const key = makeKey(e.name, e.d && e.d.y);
+    const noteParts = [];
+    if(e.role) noteParts.push('Rol/cargo: ' + e.role);
+    if(e.note) noteParts.push(e.note);
+    noteParts.push('APA 7: cita solo en el texto; no incluir en la lista de referencias.');
+    out += bibEntry('misc', key, {
+      author: e.name,
+      title: `Comunicación personal (${e.type})`,
+      year: e.d && e.d.y,
+      note: noteParts.join('. ')
+    });
+  });
+
+  store.corp.forEach(e=>{
+    const key = makeKey(e.author, e.year);
+    const pub = e.publisher || e.author;
+    if(e.type === 'RPRT'){
+      out += bibEntry('techreport', key, { author: e.author, title: e.title, year: e.year, institution: pub, url: e.url });
+    } else if(e.type === 'BOOK'){
+      out += bibEntry('book', key, { author: e.author, title: e.title, year: e.year, publisher: pub, url: e.url });
+    } else {
+      out += bibEntry('misc', key, { author: e.author, title: e.title, year: e.year, howpublished: pub, url: e.url });
+    }
+  });
+
+  store.web.forEach(e=>{
+    const key = makeKey(e.author || e.site || e.title, e.d && e.d.y);
+    out += bibEntry('misc', key, {
+      author: e.author,
+      title: e.title,
+      year: e.d && e.d.y,
+      month: e.d && e.d.m ? MESES[e.d.m-1] : '',
+      howpublished: e.site,
+      url: e.url
+    });
+  });
+
+  store.yt.forEach(e=>{
+    const key = makeKey(e.author, e.d && e.d.y);
+    out += bibEntry('misc', key, {
+      author: e.author,
+      title: e.title,
+      year: e.d && e.d.y,
+      month: e.d && e.d.m ? MESES[e.d.m-1] : '',
+      howpublished: 'Video de YouTube',
+      url: e.url
+    });
+  });
+
+  return out.trim() + '\n';
+}
+
+function downloadBib(){
+  const content = buildBib();
+  const blob = new Blob([content], { type: 'application/x-bibtex' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'referencias.bib';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
