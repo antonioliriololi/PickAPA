@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Fichero de referencias &middot; RIS / APA 7</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+  :root{
+    --paper:#FBF8F1;
+    --card:#FFFFFF;
+    --ink:#241F1C;
+    --ink-soft:#6B6459;
+    --rule:#D8D0BE;
+    --rule-strong:#B9AF98;
+
+    /* four cover blocks */
+    --green:#4C8964;
+    --green-soft:#E6EEE6;
+    --orange:#E4842B;
+    --orange-soft:#FBE9D6;
+    --teal:#237E92;
+    --teal-soft:#DEEFF1;
+    --red:#B4392B;
+    --red-soft:#F6E1DD;
+
+    --focus:#237E92;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    padding: 40px 20px 80px;
+    line-height:1.5;
+  }
+
+  .wrap{ max-width: 760px; margin:0 auto; }
+
+  /* ---- Header, with a small nod to the cover's four color blocks ---- */
+  header.page-head{ margin-bottom: 30px; }
+
+  .swatch-row{
+    display:flex;
+    height: 8px;
+    width: 92px;
+    border-radius: 2px;
+    overflow:hidden;
+    margin-bottom: 16px;
+  }
+  .swatch-row span{ flex:1; }
+  .swatch-row span:nth-child(1){ background: var(--green); }
+  .swatch-row span:nth-child(2){ background: var(--orange); }
+  .swatch-row span:nth-child(3){ background: var(--teal); }
+  .swatch-row span:nth-child(4){ background: var(--red); }
+
+  header.page-head h1{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size: 2rem;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  header.page-head p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size: 0.95rem;
+    max-width: 56ch;
+  }
+
+  /* ---- Tabs, each carrying one of the four cover colors ---- */
+  .tabs{
+    display:flex;
+    gap:4px;
+    margin-top: 26px;
+    flex-wrap: wrap;
+  }
+  .tab{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+    padding: 10px 14px 9px;
+    background: #EFE9D9;
+    border: 1px solid var(--rule-strong);
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    color: var(--ink-soft);
+    position: relative;
+    top: 1px;
+    border-top: 3px solid transparent;
+  }
+  .tab[data-tab="news"]{ border-top-color: var(--orange); }
+  .tab[data-tab="pcomm"]{ border-top-color: var(--teal); }
+  .tab[data-tab="corp"]{ border-top-color: var(--red); }
+  .tab[data-tab="yt"]{ border-top-color: var(--green); }
+
+  .tab[aria-selected="true"]{
+    background: var(--card);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .tab .count{
+    display:inline-block;
+    min-width: 16px;
+    text-align:center;
+    margin-left: 6px;
+    font-weight: 600;
+  }
+  .tab[data-tab="news"] .count{ color: var(--orange); }
+  .tab[data-tab="pcomm"] .count{ color: var(--teal); }
+  .tab[data-tab="corp"] .count{ color: var(--red); }
+  .tab[data-tab="yt"] .count{ color: var(--green); }
+
+  .tab:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* ---- Card panel ---- */
+  .card{
+    background: var(--card);
+    border: 1px solid var(--rule-strong);
+    border-radius: 0 6px 6px 6px;
+    padding: 26px 28px 24px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  }
+  .card h2{
+    font-family:'Source Serif 4', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size: 1.15rem;
+    margin: 0 0 4px;
+  }
+  .card[data-panel="news"] h2{ color: var(--orange); }
+  .card[data-panel="pcomm"] h2{ color: var(--teal); }
+  .card[data-panel="corp"] h2{ color: var(--red); }
+  .card[data-panel="yt"] h2{ color: var(--green); }
+
+  .card .hint{
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    margin: 0 0 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  .field-row{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 16px;
+    margin-bottom: 4px;
+  }
+  .field{ margin-bottom: 14px; }
+  .field.full{ grid-column: 1 / -1; }
+
+  label{
+    display:block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--ink);
+  }
+  label .opt{
+    font-weight: 400;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  input[type=text], input[type=date], input[type=number], input[type=url], select, textarea{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size: 0.92rem;
+    padding: 8px 10px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--ink);
+  }
+  textarea{ resize: vertical; min-height: 54px; }
+
+  .add-btn{
+    margin-top: 10px;
+    border: none;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .card[data-panel="news"] .add-btn{ background: var(--orange); }
+  .card[data-panel="news"] .add-btn:hover{ background:#c66c1c; }
+  .card[data-panel="pcomm"] .add-btn{ background: var(--teal); }
+  .card[data-panel="pcomm"] .add-btn:hover{ background:#186576; }
+  .card[data-panel="corp"] .add-btn{ background: var(--red); }
+  .card[data-panel="corp"] .add-btn:hover{ background:#8f2c21; }
+  .card[data-panel="yt"] .add-btn{ background: var(--green); }
+  .card[data-panel="yt"] .add-btn:hover{ background:#396c4c; }
+
+  /* ---- Entry list (drawer of added cards) ---- */
+  .drawer{ margin-top: 22px; }
+  .drawer h3{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    margin: 0 0 10px;
+  }
+  .entry{
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--rule-strong);
+    border-radius: 3px;
+    padding: 12px 40px 12px 14px;
+    margin-bottom: 8px;
+  }
+  .card[data-panel="news"] .entry{ border-left-color: var(--orange); }
+  .card[data-panel="pcomm"] .entry{ border-left-color: var(--teal); }
+  .card[data-panel="corp"] .entry{ border-left-color: var(--red); }
+  .card[data-panel="yt"] .entry{ border-left-color: var(--green); }
+
+  .entry .apa{ font-size: 0.88rem; line-height: 1.45; }
+  .entry .apa .warn{
+    display:block;
+    margin-top: 6px;
+    font-size: 0.78rem;
+    color: var(--teal);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+  }
+  .entry .remove{
+    position:absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    border-radius: 3px;
+  }
+  .entry .remove:hover{ background: var(--red-soft); color: var(--red); }
+  .empty{
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    font-style: italic;
+    padding: 8px 2px 2px;
+  }
+
+  /* ---- Footer / export bar ---- */
+  .export-bar{
+    position: sticky;
+    bottom: 18px;
+    margin-top: 34px;
+    background: var(--card);
+    border: 1px solid var(--rule-strong);
+    border-radius: 6px;
+    padding: 14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  }
+  .export-bar .total{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+  .export-bar .total b{ color: var(--ink); }
+  .download-btn{
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .download-btn:hover{ background:#c66c1c; }
+  .download-btn:disabled{
+    background: #E6DFCC;
+    color: var(--ink-soft);
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 560px){
+    .field-row{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="swatch-row"><span></span><span></span><span></span><span></span></div>
+    <h1>Fichero de referencias</h1>
+    <p>Registra fuentes de noticias, comunicaciones personales, autores corporativos y videos de YouTube, y descárgalas como un solo archivo .ris para tu gestor de referencias. Cada ficha muestra también su formato APA&nbsp;7ª edición.</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="news">Fuentes de Noticias <span class="count" id="count-news">0</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="pcomm">Comunicación Personal <span class="count" id="count-pcomm">0</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="corp">Autor Corporativo <span class="count" id="count-corp">0</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="yt">Videos de YouTube <span class="count" id="count-yt">0</span></button>
+  </div>
+
+  <!-- ============ PANEL: NOTICIAS ============ -->
+  <section class="card" data-panel="news">
+    <h2>Fuente de noticias</h2>
+    <p class="hint">Artículos de periódicos, portales de noticias o revistas de divulgación. APA&nbsp;7: Apellido, A. A. (Año, Mes Día). Título del artículo. <i>Nombre del medio</i>. URL</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Autor <span class="opt">(si no hay autor, deja en blanco)</span></label>
+        <input type="text" id="news-author" placeholder="Apellido, Nombre">
+      </div>
+      <div class="field">
+        <label>Fecha de publicación</label>
+        <input type="date" id="news-date">
+      </div>
+    </div>
+
+    <div class="field full">
+      <label>Título del artículo</label>
+      <input type="text" id="news-title" placeholder="Título de la noticia">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Nombre del medio</label>
+        <input type="text" id="news-outlet" list="outlet-list" placeholder="El Comercio, BBC News, etc.">
+        <datalist id="outlet-list">
+          <option value="Diario Gestión">
+          <option value="El Peruano">
+          <option value="RPP">
+          <option value="El Comercio">
+          <option value="Andina">
+          <option value="BBC News">
+          <option value="Deutsche Welle">
+          <option value="CNN">
+          <option value="EFE">
+          <option value="Associated Press">
+          <option value="RTVE">
+          <option value="Infobae">
+          <option value="El País">
+          <option value="Forbes">
+          <option value="Reuters">
+          <option value="Financial Times">
+        </datalist>
+      </div>
+      <div class="field">
+        <label>URL <span class="opt">(opcional)</span></label>
+        <input type="url" id="news-url" placeholder="https://">
+      </div>
+    </div>
+
+    <button class="add-btn" onclick="addEntry('news')">Agregar a la ficha</button>
+
+    <div class="drawer">
+      <h3>Registradas</h3>
+      <div id="list-news"></div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL: COMUNICACION PERSONAL ============ -->
+  <section class="card" data-panel="pcomm" hidden>
+    <h2>Comunicación personal</h2>
+    <p class="hint">Correos, entrevistas, mensajes o conversaciones no recuperables. APA&nbsp;7 solo exige citarlas en el texto &mdash; no van en la lista de referencias.</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Nombre de la persona</label>
+        <input type="text" id="pcomm-name" placeholder="Nombre, Inicial del apellido">
+      </div>
+      <div class="field">
+        <label>Fecha de la comunicación</label>
+        <input type="date" id="pcomm-date">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Tipo de comunicación</label>
+        <select id="pcomm-type">
+          <option value="correo electrónico">Correo electrónico</option>
+          <option value="entrevista">Entrevista</option>
+          <option value="mensaje de texto">Mensaje de texto</option>
+          <option value="llamada telefónica">Llamada telefónica</option>
+          <option value="conversación">Conversación / reunión</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Rol o cargo <span class="opt">(opcional)</span></label>
+        <input type="text" id="pcomm-role" placeholder="p. ej. Jefa de Recursos Humanos">
+      </div>
+    </div>
+
+    <div class="field full">
+      <label>Nota <span class="opt">(tema tratado, para tu propio registro)</span></label>
+      <textarea id="pcomm-note" placeholder="Sobre qué trató la comunicación"></textarea>
+    </div>
+
+    <button class="add-btn" onclick="addEntry('pcomm')">Agregar a la ficha</button>
+
+    <div class="drawer">
+      <h3>Registradas</h3>
+      <div id="list-pcomm"></div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL: AUTOR CORPORATIVO ============ -->
+  <section class="card" data-panel="corp" hidden>
+    <h2>Autor corporativo</h2>
+    <p class="hint">Organizaciones, ministerios, universidades o empresas como autor. APA&nbsp;7: Organización. (Año). <i>Título del documento</i>. Editorial. URL</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Organización (autor)</label>
+        <input type="text" id="corp-author" list="corp-list" placeholder="p. ej. Organización Mundial de la Salud">
+        <datalist id="corp-list">
+          <option value="ONU">
+          <option value="OMS">
+          <option value="UNESCO">
+          <option value="BID">
+          <option value="CEPAL">
+        </datalist>
+      </div>
+      <div class="field">
+        <label>Año de publicación</label>
+        <input type="number" id="corp-year" placeholder="2026" min="1500" max="2100">
+      </div>
+    </div>
+
+    <div class="field full">
+      <label>Título del documento</label>
+      <input type="text" id="corp-title" placeholder="Título del informe, norma o página">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Tipo de documento</label>
+        <select id="corp-type">
+          <option value="RPRT">Informe</option>
+          <option value="ELEC">Página web</option>
+          <option value="BOOK">Libro / manual</option>
+          <option value="GEN">Otro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Editorial / publicado por <span class="opt">(si es igual al autor, deja en blanco)</span></label>
+        <input type="text" id="corp-publisher" placeholder="Solo si difiere del autor">
+      </div>
+    </div>
+
+    <div class="field full">
+      <label>URL <span class="opt">(opcional)</span></label>
+      <input type="url" id="corp-url" placeholder="https://">
+    </div>
+
+    <button class="add-btn" onclick="addEntry('corp')">Agregar a la ficha</button>
+
+    <div class="drawer">
+      <h3>Registradas</h3>
+      <div id="list-corp"></div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL: YOUTUBE ============ -->
+  <section class="card" data-panel="yt" hidden>
+    <h2>Video de YouTube</h2>
+    <p class="hint">APA&nbsp;7: Autor o canal. (Año, Mes Día). <i>Título del video</i> [Video]. YouTube. URL</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Autor o nombre del canal</label>
+        <input type="text" id="yt-author" placeholder="Nombre del canal o del autor">
+      </div>
+      <div class="field">
+        <label>Fecha de publicación</label>
+        <input type="date" id="yt-date">
+      </div>
+    </div>
+
+    <div class="field full">
+      <label>Título del video</label>
+      <input type="text" id="yt-title" placeholder="Título tal como aparece en YouTube">
+    </div>
+
+    <div class="field full">
+      <label>URL del video</label>
+      <input type="url" id="yt-url" placeholder="https://www.youtube.com/watch?v=...">
+    </div>
+
+    <button class="add-btn" onclick="addEntry('yt')">Agregar a la ficha</button>
+
+    <div class="drawer">
+      <h3>Registradas</h3>
+      <div id="list-yt"></div>
+    </div>
+  </section>
+
+  <div class="export-bar">
+    <div class="total"><b id="total-count">0</b> referencia(s) lista(s) para exportar</div>
+    <button class="download-btn" id="download-btn" onclick="downloadRis()" disabled>Descargar .ris</button>
+  </div>
+
+</div>
+
+<script>
+const store = { news: [], pcomm: [], corp: [], yt: [] };
+
+function fmtDateAPA(iso){
+  if(!iso) return { year:'s.f.', full:null };
+  const [y,m,d] = iso.split('-').map(Number);
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  return { year: String(y), full: `${y}, ${meses[m-1]} ${d}`, y, m, d };
+}
+
+function addEntry(kind){
+  let entry;
+  if(kind === 'news'){
+    const author = document.getElementById('news-author').value.trim();
+    const date = document.getElementById('news-date').value;
+    const title = document.getElementById('news-title').value.trim();
+    const outlet = document.getElementById('news-outlet').value.trim();
+    const url = document.getElementById('news-url').value.trim();
+    if(!title || !outlet){ alert('Completa al menos el título y el nombre del medio.'); return; }
+    const d = fmtDateAPA(date);
+    let apa = '';
+    if(author) apa += `${author}. `;
+    apa += `(${d.full || d.year}). ${title}. <i>${outlet}</i>.`;
+    if(url) apa += ` ${url}`;
+    entry = { author, date, title, outlet, url, apa, d };
+  } else if(kind === 'pcomm'){
+    const name = document.getElementById('pcomm-name').value.trim();
+    const date = document.getElementById('pcomm-date').value;
+    const type = document.getElementById('pcomm-type').value;
+    const role = document.getElementById('pcomm-role').value.trim();
+    const note = document.getElementById('pcomm-note').value.trim();
+    if(!name || !date){ alert('Completa al menos el nombre y la fecha.'); return; }
+    const d = fmtDateAPA(date);
+    const apa = `(${name}, comunicación personal, ${d.full}).`;
+    entry = { name, date, type, role, note, apa, d };
+  } else if(kind === 'corp'){
+    const author = document.getElementById('corp-author').value.trim();
+    const year = document.getElementById('corp-year').value.trim();
+    const title = document.getElementById('corp-title').value.trim();
+    const type = document.getElementById('corp-type').value;
+    const publisher = document.getElementById('corp-publisher').value.trim();
+    const url = document.getElementById('corp-url').value.trim();
+    if(!author || !title){ alert('Completa al menos la organización y el título.'); return; }
+    let apa = `${author}. (${year || 's.f.'}). <i>${title}</i>.`;
+    if(publisher) apa += ` ${publisher}.`;
+    if(url) apa += ` ${url}`;
+    entry = { author, year, title, type, publisher, url, apa };
+  } else if(kind === 'yt'){
+    const author = document.getElementById('yt-author').value.trim();
+    const date = document.getElementById('yt-date').value;
+    const title = document.getElementById('yt-title').value.trim();
+    const url = document.getElementById('yt-url').value.trim();
+    if(!author || !title || !url){ alert('Completa el autor/canal, el título y la URL.'); return; }
+    const d = fmtDateAPA(date);
+    const apa = `${author}. (${d.full || d.year}). <i>${title}</i> [Video]. YouTube. ${url}`;
+    entry = { author, date, title, url, apa, d };
+  }
+  store[kind].push(entry);
+  clearForm(kind);
+  render();
+}
+
+function clearForm(kind){
+  if(kind==='news'){
+    ['news-author','news-title','news-outlet','news-url'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('news-date').value='';
+  } else if(kind==='pcomm'){
+    ['pcomm-name','pcomm-role','pcomm-note'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('pcomm-date').value='';
+    document.getElementById('pcomm-type').selectedIndex = 0;
+  } else if(kind==='corp'){
+    ['corp-author','corp-year','corp-title','corp-publisher','corp-url'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('corp-type').selectedIndex = 0;
+  } else if(kind==='yt'){
+    ['yt-author','yt-title','yt-url'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('yt-date').value='';
+  }
+}
+
+function removeEntry(kind, idx){
+  store[kind].splice(idx,1);
+  render();
+}
+
+function render(){
+  ['news','pcomm','corp','yt'].forEach(kind=>{
+    const listEl = document.getElementById('list-'+kind);
+    const countEl = document.getElementById('count-'+kind);
+    countEl.textContent = store[kind].length;
+    if(store[kind].length === 0){
+      listEl.innerHTML = '<div class="empty">Aún no has agregado ninguna.</div>';
+      return;
+    }
+    listEl.innerHTML = store[kind].map((e,i)=>{
+      let warn = '';
+      if(kind === 'pcomm'){
+        warn = '<span class="warn">APA 7: solo se cita en el texto, no aparece en la lista de referencias.</span>';
+      }
+      return `<div class="entry">
+        <button class="remove" title="Quitar" onclick="removeEntry('${kind}',${i})">&times;</button>
+        <div class="apa">${e.apa}${warn}</div>
+      </div>`;
+    }).join('');
+  });
+  const total = store.news.length + store.pcomm.length + store.corp.length + store.yt.length;
+  document.getElementById('total-count').textContent = total;
+  document.getElementById('download-btn').disabled = total === 0;
+}
+
+function risEscape(s){
+  return (s||'').replace(/\r?\n/g,' ').trim();
+}
+
+function buildRis(){
+  const lines = [];
+
+  store.news.forEach(e=>{
+    lines.push('TY  - NEWS');
+    if(e.author) lines.push('AU  - ' + risEscape(e.author));
+    if(e.d && e.d.y) lines.push('PY  - ' + e.d.y);
+    if(e.date) lines.push('DA  - ' + e.date.replace(/-/g,'/'));
+    lines.push('TI  - ' + risEscape(e.title));
+    lines.push('T2  - ' + risEscape(e.outlet));
+    if(e.url) lines.push('UR  - ' + risEscape(e.url));
+    lines.push('ER  - ');
+    lines.push('');
+  });
+
+  store.pcomm.forEach(e=>{
+    lines.push('TY  - PCOMM');
+    lines.push('AU  - ' + risEscape(e.name));
+    if(e.d && e.d.y) lines.push('PY  - ' + e.d.y);
+    if(e.date) lines.push('DA  - ' + e.date.replace(/-/g,'/'));
+    lines.push('TI  - Comunicación personal (' + risEscape(e.type) + ')');
+    if(e.role) lines.push('N1  - Rol/cargo: ' + risEscape(e.role));
+    if(e.note) lines.push('N1  - ' + risEscape(e.note));
+    lines.push('N1  - Nota APA 7: cita solo en el texto; no incluir en la lista de referencias.');
+    lines.push('ER  - ');
+    lines.push('');
+  });
+
+  store.corp.forEach(e=>{
+    lines.push('TY  - ' + e.type);
+    lines.push('AU  - ' + risEscape(e.author) + ',');
+    if(e.year) lines.push('PY  - ' + risEscape(e.year));
+    lines.push('TI  - ' + risEscape(e.title));
+    if(e.publisher) lines.push('PB  - ' + risEscape(e.publisher));
+    else lines.push('PB  - ' + risEscape(e.author));
+    if(e.url) lines.push('UR  - ' + risEscape(e.url));
+    lines.push('ER  - ');
+    lines.push('');
+  });
+
+  store.yt.forEach(e=>{
+    lines.push('TY  - VIDEO');
+    lines.push('AU  - ' + risEscape(e.author));
+    if(e.d && e.d.y) lines.push('PY  - ' + e.d.y);
+    if(e.date) lines.push('DA  - ' + e.date.replace(/-/g,'/'));
+    lines.push('TI  - ' + risEscape(e.title));
+    lines.push('PB  - YouTube');
+    lines.push('UR  - ' + risEscape(e.url));
+    lines.push('ER  - ');
+    lines.push('');
+  });
+
+  return lines.join('\n');
+}
+
+function downloadRis(){
+  const content = buildRis();
+  const blob = new Blob([content], { type: 'application/x-research-info-systems' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'referencias.ris';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ---- Tabs ----
+document.querySelectorAll('.tab').forEach(tabBtn=>{
+  tabBtn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected','false'));
+    tabBtn.setAttribute('aria-selected','true');
+    const target = tabBtn.dataset.tab;
+    document.querySelectorAll('[data-panel]').forEach(p=>{
+      p.hidden = p.dataset.panel !== target;
+    });
+  });
+});
+
+render();
+</script>
+
+</body>
+</html>
