@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Fichero de referencias &middot; RIS / APA 7</title>
+<title>Pick APA, fichero de referencias &middot; RIS / APA 7</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
 
@@ -23,6 +23,8 @@
     --teal-soft:#DEEFF1;
     --red:#B4392B;
     --red-soft:#F6E1DD;
+    --blue:#3B6B92;
+    --blue-soft:#DDE7EE;
 
     --focus:#237E92;
   }
@@ -56,6 +58,7 @@
   .swatch-row span:nth-child(2){ background: var(--orange); }
   .swatch-row span:nth-child(3){ background: var(--teal); }
   .swatch-row span:nth-child(4){ background: var(--red); }
+  .swatch-row span:nth-child(5){ background: var(--blue); }
 
   header.page-head h1{
     font-family:'Source Serif 4', serif;
@@ -96,6 +99,7 @@
   .tab[data-tab="news"]{ border-top-color: var(--orange); }
   .tab[data-tab="pcomm"]{ border-top-color: var(--teal); }
   .tab[data-tab="corp"]{ border-top-color: var(--red); }
+  .tab[data-tab="web"]{ border-top-color: var(--blue); }
   .tab[data-tab="yt"]{ border-top-color: var(--green); }
 
   .tab[aria-selected="true"]{
@@ -103,17 +107,28 @@
     color: var(--ink);
     font-weight: 600;
   }
+
   .tab .count{
-    display:inline-block;
-    min-width: 16px;
-    text-align:center;
-    margin-left: 6px;
-    font-weight: 600;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    margin-left: 8px;
+    border-radius: 999px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--rule-strong);
+    vertical-align: middle;
   }
-  .tab[data-tab="news"] .count{ color: var(--orange); }
-  .tab[data-tab="pcomm"] .count{ color: var(--teal); }
-  .tab[data-tab="corp"] .count{ color: var(--red); }
-  .tab[data-tab="yt"] .count{ color: var(--green); }
+  .tab[data-tab="news"] .count{ background: var(--orange); }
+  .tab[data-tab="pcomm"] .count{ background: var(--teal); }
+  .tab[data-tab="corp"] .count{ background: var(--red); }
+  .tab[data-tab="web"] .count{ background: var(--blue); }
+  .tab[data-tab="yt"] .count{ background: var(--green); }
 
   .tab:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
     outline: 2px solid var(--focus);
@@ -138,6 +153,7 @@
   .card[data-panel="news"] h2{ color: var(--orange); }
   .card[data-panel="pcomm"] h2{ color: var(--teal); }
   .card[data-panel="corp"] h2{ color: var(--red); }
+  .card[data-panel="web"] h2{ color: var(--blue); }
   .card[data-panel="yt"] h2{ color: var(--green); }
 
   .card .hint{
@@ -198,6 +214,8 @@
   .card[data-panel="pcomm"] .add-btn:hover{ background:#186576; }
   .card[data-panel="corp"] .add-btn{ background: var(--red); }
   .card[data-panel="corp"] .add-btn:hover{ background:#8f2c21; }
+  .card[data-panel="web"] .add-btn{ background: var(--blue); }
+  .card[data-panel="web"] .add-btn:hover{ background:#2c5573; }
   .card[data-panel="yt"] .add-btn{ background: var(--green); }
   .card[data-panel="yt"] .add-btn:hover{ background:#396c4c; }
 
@@ -222,6 +240,7 @@
   .card[data-panel="news"] .entry{ border-left-color: var(--orange); }
   .card[data-panel="pcomm"] .entry{ border-left-color: var(--teal); }
   .card[data-panel="corp"] .entry{ border-left-color: var(--red); }
+  .card[data-panel="web"] .entry{ border-left-color: var(--blue); }
   .card[data-panel="yt"] .entry{ border-left-color: var(--green); }
 
   .entry .apa{ font-size: 0.88rem; line-height: 1.45; }
@@ -304,15 +323,16 @@
 <div class="wrap">
 
   <header class="page-head">
-    <div class="swatch-row"><span></span><span></span><span></span><span></span></div>
-    <h1>Fichero de referencias</h1>
-    <p>Registra fuentes de noticias, comunicaciones personales, autores corporativos y videos de YouTube, y descárgalas como un solo archivo .ris para tu gestor de referencias. Cada ficha muestra también su formato APA&nbsp;7ª edición.</p>
+    <div class="swatch-row"><span></span><span></span><span></span><span></span><span></span></div>
+    <h1>Pick APA, fichero de referencias</h1>
+    <p>Registra fuentes de noticias, comunicaciones personales, autores corporativos, páginas web y videos de YouTube, y descárgalas como un solo archivo .ris para tu gestor de referencias. Cada ficha muestra también su formato APA&nbsp;7ª edición.</p>
   </header>
 
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-tab="news">Fuentes de Noticias <span class="count" id="count-news">0</span></button>
     <button class="tab" role="tab" aria-selected="false" data-tab="pcomm">Comunicación Personal <span class="count" id="count-pcomm">0</span></button>
     <button class="tab" role="tab" aria-selected="false" data-tab="corp">Autor Corporativo <span class="count" id="count-corp">0</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="web">Página Web <span class="count" id="count-web">0</span></button>
     <button class="tab" role="tab" aria-selected="false" data-tab="yt">Videos de YouTube <span class="count" id="count-yt">0</span></button>
   </div>
 
@@ -382,7 +402,7 @@
     <div class="field-row">
       <div class="field">
         <label>Nombre de la persona</label>
-        <input type="text" id="pcomm-name" placeholder="Nombre, Inicial del apellido">
+        <input type="text" id="pcomm-name" placeholder="Apellido, Nombre">
       </div>
       <div class="field">
         <label>Fecha de la comunicación</label>
@@ -478,6 +498,46 @@
     </div>
   </section>
 
+  <!-- ============ PANEL: PAGINA WEB ============ -->
+  <section class="card" data-panel="web" hidden>
+    <h2>Página web</h2>
+    <p class="hint">Páginas o artículos web sin autor corporativo ni carácter noticioso. APA&nbsp;7: Apellido, A. A. (Año, Mes Día). Título de la página. <i>Nombre del sitio</i>. URL</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Autor <span class="opt">(persona; si no hay, deja en blanco)</span></label>
+        <input type="text" id="web-author" placeholder="Apellido, Nombre">
+      </div>
+      <div class="field">
+        <label>Fecha de publicación <span class="opt">(o de última actualización)</span></label>
+        <input type="date" id="web-date">
+      </div>
+    </div>
+
+    <div class="field full">
+      <label>Título de la página</label>
+      <input type="text" id="web-title" placeholder="Título tal como aparece en la página">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Nombre del sitio web</label>
+        <input type="text" id="web-site" placeholder="p. ej. Wikipedia, Gob.pe">
+      </div>
+      <div class="field">
+        <label>URL</label>
+        <input type="url" id="web-url" placeholder="https://">
+      </div>
+    </div>
+
+    <button class="add-btn" onclick="addEntry('web')">Agregar a la ficha</button>
+
+    <div class="drawer">
+      <h3>Registradas</h3>
+      <div id="list-web"></div>
+    </div>
+  </section>
+
   <!-- ============ PANEL: YOUTUBE ============ -->
   <section class="card" data-panel="yt" hidden>
     <h2>Video de YouTube</h2>
@@ -520,7 +580,7 @@
 </div>
 
 <script>
-const store = { news: [], pcomm: [], corp: [], yt: [] };
+const store = { news: [], pcomm: [], corp: [], web: [], yt: [] };
 
 function fmtDateAPA(iso){
   if(!iso) return { year:'s.f.', full:null };
@@ -566,6 +626,19 @@ function addEntry(kind){
     if(publisher) apa += ` ${publisher}.`;
     if(url) apa += ` ${url}`;
     entry = { author, year, title, type, publisher, url, apa };
+  } else if(kind === 'web'){
+    const author = document.getElementById('web-author').value.trim();
+    const date = document.getElementById('web-date').value;
+    const title = document.getElementById('web-title').value.trim();
+    const site = document.getElementById('web-site').value.trim();
+    const url = document.getElementById('web-url').value.trim();
+    if(!title || !site || !url){ alert('Completa al menos el título, el sitio web y la URL.'); return; }
+    const d = fmtDateAPA(date);
+    let apa = '';
+    if(author) apa += `${author}. `;
+    apa += `(${d.full || d.year}). ${title}. <i>${site}</i>.`;
+    apa += ` ${url}`;
+    entry = { author, date, title, site, url, apa, d };
   } else if(kind === 'yt'){
     const author = document.getElementById('yt-author').value.trim();
     const date = document.getElementById('yt-date').value;
@@ -592,6 +665,9 @@ function clearForm(kind){
   } else if(kind==='corp'){
     ['corp-author','corp-year','corp-title','corp-publisher','corp-url'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('corp-type').selectedIndex = 0;
+  } else if(kind==='web'){
+    ['web-author','web-title','web-site','web-url'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('web-date').value='';
   } else if(kind==='yt'){
     ['yt-author','yt-title','yt-url'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('yt-date').value='';
@@ -604,7 +680,7 @@ function removeEntry(kind, idx){
 }
 
 function render(){
-  ['news','pcomm','corp','yt'].forEach(kind=>{
+  ['news','pcomm','corp','web','yt'].forEach(kind=>{
     const listEl = document.getElementById('list-'+kind);
     const countEl = document.getElementById('count-'+kind);
     countEl.textContent = store[kind].length;
@@ -623,7 +699,7 @@ function render(){
       </div>`;
     }).join('');
   });
-  const total = store.news.length + store.pcomm.length + store.corp.length + store.yt.length;
+  const total = store.news.length + store.pcomm.length + store.corp.length + store.web.length + store.yt.length;
   document.getElementById('total-count').textContent = total;
   document.getElementById('download-btn').disabled = total === 0;
 }
@@ -668,6 +744,18 @@ function buildRis(){
     if(e.publisher) lines.push('PB  - ' + risEscape(e.publisher));
     else lines.push('PB  - ' + risEscape(e.author));
     if(e.url) lines.push('UR  - ' + risEscape(e.url));
+    lines.push('ER  - ');
+    lines.push('');
+  });
+
+  store.web.forEach(e=>{
+    lines.push('TY  - ELEC');
+    if(e.author) lines.push('AU  - ' + risEscape(e.author));
+    if(e.d && e.d.y) lines.push('PY  - ' + e.d.y);
+    if(e.date) lines.push('DA  - ' + e.date.replace(/-/g,'/'));
+    lines.push('TI  - ' + risEscape(e.title));
+    lines.push('T2  - ' + risEscape(e.site));
+    lines.push('UR  - ' + risEscape(e.url));
     lines.push('ER  - ');
     lines.push('');
   });
