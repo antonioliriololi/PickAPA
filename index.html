@@ -796,7 +796,7 @@ function buildRis(){
 
 function downloadRis(){
   const content = buildRis();
-  const blob = new Blob([content], { type: 'application/x-research-info-systems' });
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -817,7 +817,8 @@ function slugKey(s){
 }
 
 function escapeBib(s){
-  return (s||'')
+  if(s === undefined || s === null) return '';
+  return String(s)
     .replace(/\\/g,'\\textbackslash ')
     .replace(/([&%$#_{}])/g,'\\$1');
 }
@@ -912,7 +913,7 @@ function buildBib(){
 
 function downloadBib(){
   const content = buildBib();
-  const blob = new Blob([content], { type: 'application/x-bibtex' });
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
