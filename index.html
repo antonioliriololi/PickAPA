@@ -647,8 +647,10 @@ function addEntry(kind){
     const date = document.getElementById('news-date').value;
     const title = document.getElementById('news-title').value.trim();
     const outlet = document.getElementById('news-outlet').value.trim();
-    // Sin autor: el nombre del medio ocupa el lugar del autor (evita que el título pase a esa posición)
-    const author = document.getElementById('news-author').value.trim() || outlet;
+    // Sin autor personal: el nombre completo del medio ocupa el lugar del autor (autor corporativo)
+    const typedAuthor = document.getElementById('news-author').value.trim();
+    const author = typedAuthor || outlet;
+    const authorOrg = !typedAuthor || typedAuthor.toLowerCase() === outlet.toLowerCase();
     const url = document.getElementById('news-url').value.trim();
     if(!title || !outlet){ alert('Completa al menos el título y el nombre del medio.'); return; }
     const d = fmtDateAPA(date);
@@ -656,7 +658,7 @@ function addEntry(kind){
     if(author) apa += `${author}. `;
     apa += `(${d.full || d.year}). ${title}. <i>${outlet}</i>.`;
     if(url) apa += ` ${url}`;
-    entry = { author, date, title, outlet, url, apa, d };
+    entry = { author, authorOrg, date, title, outlet, url, apa, d };
   } else if(kind === 'pcomm'){
     const name = document.getElementById('pcomm-name').value.trim();
     const date = document.getElementById('pcomm-date').value;
@@ -736,7 +738,8 @@ function removeEntry(kind, idx){
 // Cita en el texto (APA 7): apellido o nombre del autor corporativo + año
 function citeOf(kind, e){
   const raw = (e.author || '').trim();
-  const name = raw.split(',')[0].trim() || raw;
+  const isOrg = (kind === 'corp') || (kind === 'news' && e.authorOrg);
+  const name = isOrg ? raw : (raw.split(',')[0].trim() || raw);
   let year = 's. f.';
   if(kind === 'corp'){ year = (e.year || '').toString().trim() || 's. f.'; }
   else if(e.d && e.d.y){ year = String(e.d.y); }
@@ -757,6 +760,9 @@ function render(){
       if(kind === 'pcomm'){
         warn = '<span class="warn">APA 7: solo se cita en el texto, no aparece en la lista de referencias.</span>';
       }
+      if(kind === 'news' && !e.authorOrg && e.author && e.author.indexOf(',') === -1){
+        warn += '<span class="warn">Escribe el autor como Apellido, Nombre (p. ej. Pérez, Juan) para que se importe y se cite bien.</span>';
+      }
       let cite = '';
       if(kind !== 'pcomm'){
         const c = citeOf(kind, e);
@@ -776,7 +782,7 @@ function render(){
 
 // Noticias sin autor personal: el medio actúa como autor institucional
 function newsAuthorIsOrg(e){
-  return !!e.author && e.author.trim().toLowerCase() === (e.outlet||'').trim().toLowerCase();
+  return !!e.authorOrg;
 }
 
 function risEscape(s){
