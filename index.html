@@ -774,6 +774,11 @@ function render(){
   document.getElementById('download-btn-bib').disabled = total === 0;
 }
 
+// Noticias sin autor personal: el medio actúa como autor institucional
+function newsAuthorIsOrg(e){
+  return !!e.author && e.author.trim().toLowerCase() === (e.outlet||'').trim().toLowerCase();
+}
+
 function risEscape(s){
   return (s||'').replace(/\r?\n/g,' ').trim();
 }
@@ -783,7 +788,8 @@ function buildRis(){
 
   store.news.forEach(e=>{
     lines.push('TY  - NEWS');
-    if(e.author) lines.push('AU  - ' + risEscape(e.author));
+    // La coma final marca un autor institucional (evita que se parta en nombre y apellido)
+    if(e.author) lines.push('AU  - ' + risEscape(e.author) + (newsAuthorIsOrg(e) ? ',' : ''));
     if(e.d && e.d.y) lines.push('PY  - ' + e.d.y);
     if(e.date) lines.push('DA  - ' + e.date.replace(/-/g,'/'));
     lines.push('TI  - ' + risEscape(e.title));
@@ -876,6 +882,8 @@ function escapeBib(s){
 
 function bibField(name, value){
   if(!value) return '';
+  // {corp: 'Nombre'} => doble llave, autor institucional
+  if(typeof value === 'object') return `  ${name} = {{${escapeBib(value.corp)}}},\n`;
   return `  ${name} = {${escapeBib(value)}},\n`;
 }
 
@@ -900,7 +908,7 @@ function buildBib(){
   store.news.forEach(e=>{
     const key = makeKey(e.author || e.outlet || e.title, e.d && e.d.y);
     out += bibEntry('misc', key, {
-      author: e.author,
+      author: newsAuthorIsOrg(e) ? { corp: e.author } : e.author,
       title: e.title,
       year: e.d && e.d.y,
       month: e.d && e.d.m ? MESES[e.d.m-1] : '',
@@ -927,11 +935,11 @@ function buildBib(){
     const key = makeKey(e.author, e.year);
     const pub = e.publisher || e.author;
     if(e.type === 'RPRT'){
-      out += bibEntry('techreport', key, { author: e.author, title: e.title, year: e.year, institution: pub, url: e.url });
+      out += bibEntry('techreport', key, { author: { corp: e.author }, title: e.title, year: e.year, institution: pub, url: e.url });
     } else if(e.type === 'BOOK'){
-      out += bibEntry('book', key, { author: e.author, title: e.title, year: e.year, publisher: pub, url: e.url });
+      out += bibEntry('book', key, { author: { corp: e.author }, title: e.title, year: e.year, publisher: pub, url: e.url });
     } else {
-      out += bibEntry('misc', key, { author: e.author, title: e.title, year: e.year, howpublished: pub, url: e.url });
+      out += bibEntry('misc', key, { author: { corp: e.author }, title: e.title, year: e.year, howpublished: pub, url: e.url });
     }
   });
 
